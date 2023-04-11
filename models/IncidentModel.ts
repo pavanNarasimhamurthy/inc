@@ -1,14 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinTable, OneToMany } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinTable, OneToMany, JoinColumn } from "typeorm"
 import { Employee } from "./EmployeeModel"
 import { Attachment } from "./AttachmentModel"
+import { Incidentstatus } from "./IncidentStatusModel"
 
 @Entity()
 export class Incident {
     @PrimaryGeneratedColumn()
-    IncidentId: number
+    incidentId: number
 
-    @Column("integer")
-    empID: number
 
     @Column("integer", {default: 0})
     ISOID: number
@@ -79,10 +78,14 @@ export class Incident {
     @Column("date",{nullable:true})
     closeDate: string
 
-    @ManyToOne(()=> Employee, (employee) => employee.empId)
-    @JoinTable()
-    classes: Employee;
+    @ManyToOne(()=> Employee, {nullable:false})
+    @JoinColumn({name:'empId'})
+    employee:Employee
 
     @OneToMany(() => Attachment, (attachment) => attachment.Incident)
     attachments: Attachment[];
+
+    @OneToMany(() => Incidentstatus, (incidentStatus) => incidentStatus.Incident)
+    @JoinColumn({name: 'incidentId'})
+    incidentStatus: Incidentstatus[]
 }
