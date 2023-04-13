@@ -45,16 +45,16 @@ export class EmployeeController{
 
     async getAllEmployee(req: Request,res: Response){
         try {
-            // const user = await appDataSource.getRepository(Employee).create(req.body)
-            const employee = await Util.getAllData(Employee,req.body);
-            if(employee.status > 299){
-                let returnObj = await Util.returnObj([employee.data],statusCodes.error,'Employee','getallerr')
-                return res.json(returnObj)
-            }
-            else{
-                let returnObj = await Util.returnObj(employee.data,statusCodes.success,'Employee','getall')
-                return res.json(returnObj)            
-            }                
+            var employee = []
+            const lquery = req.query
+            var empname = (lquery.empname == undefined || lquery.empname == "undefined" || lquery.empname == null) ? "" : lquery.empname;
+            var project = (lquery.project == undefined || lquery.project == "undefined" || lquery.project == null) ? "" : lquery.project;
+            var client = (lquery.client == undefined || lquery.client == "undefined" || lquery.client == null) ? "" : lquery.client;
+            var dept = (lquery.dept == undefined || lquery.dept == "undefined" || lquery.dept == null) ? "" : lquery.dept;
+            employee = await appDataSource.manager.query(`select * FROM incident.employee where (firstName LIKE '%${empname}%' or lastName LIKE '%${empname}%') and project LIKE '%${project}%' and client LIKE '%${client}%' and department LIKE '%${dept}%'`, []);
+            var returnData = JSON.parse(JSON.stringify(employee));
+            let returnObj = await Util.returnObj(returnData,statusCodes.success,'Employee','getall')
+            return res.json(returnObj)            
         } catch (error) {
             let returnObj = await Util.returnObj([error],statusCodes.error,'Employee','getallerr')
             return res.json(returnObj)        
@@ -64,7 +64,7 @@ export class EmployeeController{
     async saveEmployeesFromFile(req: Request,res: Response) {
         try {
             let csvData = [];
-            fs.createReadStream('./utility/data.csv')
+            fs.createReadStream(`./attachments/${req.file.filename}`)
             .pipe(csv(csvColumns))
             .on('data', async (data) => {
                 csvData.push(data);
@@ -76,16 +76,16 @@ export class EmployeeController{
                     return res.json(returnObj)
                 }
                 else{
-                    // await appDataSource
-                    // .createQueryBuilder()
-                    // .update(Employee)
-                    // .set({ "foundInFile":false })
-                    // .where("'employee.emailID' NOT IN (:emails)", { emails: csvresponse.csvEmails })
-                    // .execute();
-                    await appDataSource.manager.query(`UPDATE employee SET "foundInFile" = $1 WHERE employee."emailID" NOT IN ($2)`, [
-                        false,
-                        csvresponse.csvEmails
-                    ]);
+                    await appDataSource
+                    .createQueryBuilder()
+                    .update(Employee)
+                    .set({ "foundInFile":false })
+                    .where("'employee.emailID' NOT IN (:emails)", { emails: csvresponse.csvEmails })
+                    .execute();
+                    // await appDataSource.manager.query(`UPDATE employee SET "foundInFile" = $1 WHERE employee."emailID" NOT IN ($2)`, [
+                    //     false,
+                    //     csvresponse.csvEmails
+                    // ]);
                     let returnObj = await Util.returnObj(csvresponse.csvEmails,statusCodes.success,'Employee','create')
                     return res.json(returnObj)
                     }
