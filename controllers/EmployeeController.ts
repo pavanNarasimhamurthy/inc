@@ -5,6 +5,7 @@ import { Util } from '../utility/utils';
 import csv from 'csv-parser';
 import fs from 'fs';
 import { appDataSource } from '../database/database';
+import { Console } from 'console';
 
 export class EmployeeController{
     async  createEmployee(req: Request,res: Response){
@@ -44,6 +45,7 @@ export class EmployeeController{
     }
 
     async getAllEmployee(req: Request,res: Response){
+        console.log("dddd")
         try {
             var employee = []
             const lquery = req.query
@@ -51,7 +53,9 @@ export class EmployeeController{
             var project = (lquery.project == undefined || lquery.project == "undefined" || lquery.project == null) ? "" : lquery.project;
             var client = (lquery.client == undefined || lquery.client == "undefined" || lquery.client == null) ? "" : lquery.client;
             var dept = (lquery.dept == undefined || lquery.dept == "undefined" || lquery.dept == null) ? "" : lquery.dept;
+        
             employee = await appDataSource.manager.query(`select * FROM incident.employee where (firstName LIKE '%${empname}%' or lastName LIKE '%${empname}%') and project LIKE '%${project}%' and client LIKE '%${client}%' and department LIKE '%${dept}%'`, []);
+            console.log("employee",employee);
             var returnData = JSON.parse(JSON.stringify(employee));
             let returnObj = await Util.returnObj(returnData,statusCodes.success,'Employee','getall')
             return res.json(returnObj)            

@@ -10,6 +10,8 @@ import incidentRouter from './routes/IncidentRoute';
 import incStatusRoute from './routes/IncidentStatusRoute';
 import { appDataSource } from './database/database';
 import attachmentRouter from './routes/AttachmentRouter';
+import datamasterRouter from './routes/ListDataMasterRoute';
+import datadetailsRouter from './routes/ListDataDetailsRoute';
 var fName:string;
 
 fileName(__filename).then((data)=>{
@@ -58,6 +60,8 @@ app.use("/employee",empRouter);
 app.use("/incident",incidentRouter); 
 app.use('/incstatus',incStatusRoute);
 app.use('/incident',attachmentRouter);
+app.use('/datamaster',datamasterRouter);
+app.use('/datadetails',datadetailsRouter);
 // Server setup
 app.listen(gport, () => {
     logger.info(`${fName} TypeScript with Express

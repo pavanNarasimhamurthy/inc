@@ -14,5 +14,7 @@ export class Processstep {
 
     @Column("text")
     psEmailID: string
+
+   
     
 }

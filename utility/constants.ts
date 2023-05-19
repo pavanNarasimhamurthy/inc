@@ -42,6 +42,32 @@ let incMessages = {
     incIncidentIDNull: 'Incident ID is null'
 }
 
+let datamasterMessages = {
+    datamasterCreatedSuccessfully: 'datamaster created successfully',
+    datamasterDeletedSuccessfully: 'datamaster deleted successfully',
+    datamasterSaveError: 'Error while saving datamaster',
+    datamasterDeleteError: 'Error while deleting datamaster',
+    datamasterCreateError: 'Error while creating datamaster',
+    datamasterlstMstIDRequired: 'lstMstID is required',
+    datamasterlstMstCodeRequired: 'lstMstCode  is required',
+    datamasterlstMstDescRequired: 'lstMstDesc is required',
+    datamasterNotFound: 'datamaster not found',
+    getAlldatamastersErr: 'Error while getting all datamaster',
+}
+
+let datadetailsMessages = {
+    datadetailsCreatedSuccessfully: ' datadetails created successfully',
+    datadetailsDeletedSuccessfully: ' datadetails deleted successfully',
+    datadetailsSaveError: 'Error while saving  datadetails',
+    datadetailsDeleteError: 'Error while deleting  datadetails',
+    datadetailsCreateError: 'Error while creating  datadetails',
+    datadetailslstDtlIDRequired: 'lstDtlID is required',
+    datadetailslstDtlCodeRequired: 'lstDtlCode is required',
+    datadetailslstDtlDescRequired: 'lstDtlDesc is required',
+    datadetailslstMstIDRequired: 'lstMstID is required',
+    datadetailsNotFound: ' datadetails not found',
+    getAlldatadetailsErr: 'Error while getting all  datadetails',
+}
 
 let defaultMessages = {
     create: ' created successfully',
@@ -67,6 +93,8 @@ export {
     messages,
     empMessages,
     incMessages,
+    datamasterMessages,
+    datadetailsMessages,
     defaultMessages,
     csvColumns,
     returnObject

@@ -72,6 +72,26 @@ class Utils{
         }
     }
 
+    async getLatestStatus(model: any,data: any){
+        let modelName = model.name;
+        try {
+            const createData = await appDataSource.getRepository(model).findOne({
+                where: data,
+                order: { statusID: 'DESC' }
+            });
+            if (createData === null)
+                return null
+            let returnObject = this.returnObj([createData],statusCodes.success,modelName,'getsingle');
+            logger.info(`${this.fName} : Successful retrival record for : ${modelName}`);
+            return returnObject;
+        } catch (error) {
+            logger.info(`${this.fName} : Error retriving record for : ${modelName}`);
+            logger.info(error)
+            let returnObject = this.returnObj([error],statusCodes.error,modelName,'getsingleerr');
+            return returnObject;
+        }
+    }
+
     async saveData(model: any,data: any){
         let modelName = model.name;
         try {
@@ -101,6 +121,24 @@ class Utils{
             return returnObject;
         }
     }
+
+    async getbycode(model: any,data: any){
+        let modelName = model.name;
+        try {
+            const createData = await appDataSource.getRepository(model).findOneBy(data)
+            let returnObject = this.returnObj([createData],statusCodes.success,modelName,'getsingle');
+            logger.info(`${this.fName} : Successful retrival record for : ${modelName}`);
+            return returnObject;
+        } catch (error) {
+            logger.info(`${this.fName} : Error retriving record for : ${modelName}`);
+            logger.info(error)
+            let returnObject = this.returnObj([error],statusCodes.error,modelName,'getsingleerr');
+            return returnObject;
+        }
+    }
+
+
+
     async getCSVEmails(csvData: Array<any>) {
         try {
             var returnData = {errors:[],csvEmails:[]}

@@ -28,8 +28,8 @@ export class Employee {
     @Column("boolean",{default:true})
     foundInFile: boolean
 
-    @Column("integer")
-    managerID: number
+   // @Column("integer")
+    //managerID: number
     
     @OneToMany(() => Incident,incident => incident.employee)
     incident:Incident[]

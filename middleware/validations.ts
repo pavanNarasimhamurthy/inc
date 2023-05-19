@@ -1,6 +1,6 @@
 import { Request, Response,NextFunction} from 'express';
 import Joi, { options } from "joi"
-import { statusCodes,messages,empMessages,incMessages } from '../utility/constants';
+import { statusCodes,messages,empMessages,incMessages,datamasterMessages,datadetailsMessages } from '../utility/constants';
 
 async function validateCreateEmployee(req: Request,res: Response, next: NextFunction){
     var ldata = req.body;
@@ -11,7 +11,7 @@ async function validateCreateEmployee(req: Request,res: Response, next: NextFunc
         department: Joi.string().required().label(empMessages.empDepartmentRequired),
         client: Joi.string().required().label(empMessages.empClientRequired),
         project: Joi.string().required().label(empMessages.empProjectRequired),
-        managerID: Joi.number().required().label(empMessages.empManagerIDRequired)
+        //managerID: Joi.number().required().label(empMessages.empManagerIDRequired)
     }).options({abortEarly:false});
     let lresponse = lJoiSchema.validate(ldata,{abortEarly:false});
     if(lresponse.error == undefined || lresponse.error == null){
@@ -103,9 +103,152 @@ async function validateGetIncidentByID(req: Request,res: Response, next: NextFun
     }
 }
 
+async function validateCreateListDataMaster(req: Request,res: Response, next: NextFunction){
+    var ldata = req.body;
+    const lJoiSchema = Joi.object({
+       // lstMstID: Joi.number().required().label(datamasterMessages.datamasterlstMstIDRequired),
+        lstMstCode: Joi.string().required().label(datamasterMessages.datamasterlstMstCodeRequired),
+        lstMstDesc: Joi.string().required().label(datamasterMessages.datamasterlstMstDescRequired),
+       
+    }).options({abortEarly:false});
+    let lresponse = lJoiSchema.validate(ldata,{abortEarly:false});
+    if(lresponse.error == undefined || lresponse.error == null){
+        next();
+    }
+    else{             
+        return res.json({
+            status: statusCodes.error,
+            message:messages.requiredFields,
+            data: lresponse.error.details.map((error) => {return error.context.label})
+        })
+    }
+}
+
+async function validateGetListDataMasterBylstMstCode(req: Request,res: Response, next: NextFunction){
+    var ldata = req.body;
+    const lJoiSchema = Joi.object({
+        lstMstCode: Joi.string().required().label(datamasterMessages.datamasterlstMstCodeRequired)
+    }).options({abortEarly:false});
+    let lresponse = lJoiSchema.validate(ldata,{abortEarly:false});
+    if(lresponse.error == undefined || lresponse.error == null){
+        next();
+    }
+    else{             
+        return res.json({
+            status: statusCodes.error,
+            message:messages.requiredFields,
+            data: lresponse.error.details.map((error) => {return error.context.label})
+        })
+    }
+}
+
+async function validateDeleteListDataMasterById(req: Request,res: Response, next: NextFunction){
+    var ldata = req.body;
+    const lJoiSchema = Joi.object({
+        lstMstID: Joi.number().required().label(datamasterMessages.datamasterlstMstIDRequired)
+    }).options({abortEarly:false});
+    let lresponse = lJoiSchema.validate(ldata,{abortEarly:false});
+    if(lresponse.error == undefined || lresponse.error == null){
+        next();
+    }
+    else{             
+        return res.json({
+            status: statusCodes.error,
+            message:messages.requiredFields,
+            data: lresponse.error.details.map((error) => {return error.context.label})
+        })
+    }
+}
+
+async function validateDeleteListDataMasterByCode(req: Request,res: Response, next: NextFunction){
+    var ldata = req.body;
+    const lJoiSchema = Joi.object({
+        lstMstCode: Joi.string().required().label(datamasterMessages.datamasterlstMstCodeRequired)
+    }).options({abortEarly:false});
+    let lresponse = lJoiSchema.validate(ldata,{abortEarly:false});
+    if(lresponse.error == undefined || lresponse.error == null){
+        next();
+    }
+    else{             
+        return res.json({
+            status: statusCodes.error,
+            message:messages.requiredFields,
+            data: lresponse.error.details.map((error) => {return error.context.label})
+        })
+    }
+}
+
+async function validateCreateListDetails(req: Request,res: Response, next: NextFunction){
+    var ldata = req.body;
+    const lJoiSchema = Joi.object({
+        //lstDtlID: Joi.number().required().label(datadetailsMessages.datadetailslstDtlIDRequired),
+        lstDtlCode: Joi.string().required().label(datadetailsMessages.datadetailslstDtlCodeRequired),
+        lstDtlDesc: Joi.string().required().label(datadetailsMessages.datadetailslstDtlDescRequired),
+        lstMstID: Joi.number().required().label(datadetailsMessages.datadetailslstMstIDRequired),
+       
+    }).options({abortEarly:false});
+    let lresponse = lJoiSchema.validate(ldata,{abortEarly:false});
+    if(lresponse.error == undefined || lresponse.error == null){
+        next();
+    }
+    else{             
+        return res.json({
+            status: statusCodes.error,
+            message:messages.requiredFields,
+            data: lresponse.error.details.map((error) => {return error.context.label})
+        })
+    }
+}
+
+async function validateGetListdatadetailsBylstDtlCode(req: Request,res: Response, next: NextFunction){
+    var ldata = req.body;
+    const lJoiSchema = Joi.object({
+        lstDtlCode: Joi.string().required().label(datadetailsMessages.datadetailslstDtlCodeRequired)
+    }).options({abortEarly:false});
+    let lresponse = lJoiSchema.validate(ldata,{abortEarly:false});
+    if(lresponse.error == undefined || lresponse.error == null){
+        next();
+    }
+    else{             
+        return res.json({
+            status: statusCodes.error,
+            message:messages.requiredFields,
+            data: lresponse.error.details.map((error) => {return error.context.label})
+        })
+    }
+}
+
+async function validateDeleteListdatadetailsBylstDtlCode(req: Request,res: Response, next: NextFunction){
+    var ldata = req.body;
+    const lJoiSchema = Joi.object({
+        lstDtlCode: Joi.string().required().label(datadetailsMessages.datadetailslstDtlCodeRequired)
+    }).options({abortEarly:false});
+    let lresponse = lJoiSchema.validate(ldata,{abortEarly:false});
+    if(lresponse.error == undefined || lresponse.error == null){
+        next();
+    }
+    else{             
+        return res.json({
+            status: statusCodes.error,
+            message:messages.requiredFields,
+            data: lresponse.error.details.map((error) => {return error.context.label})
+        })
+    }
+}
+
 export {
     validateCreateEmployee,
     validateDeleteEmployee,
+
     validateCreateIncident,
-    validateGetIncidentByID
+    validateGetIncidentByID,
+
+    validateCreateListDataMaster,
+    validateDeleteListDataMasterById,
+    validateDeleteListDataMasterByCode,
+    validateGetListDataMasterBylstMstCode,
+
+    validateCreateListDetails,
+    validateGetListdatadetailsBylstDtlCode,
+    validateDeleteListdatadetailsBylstDtlCode
 }
